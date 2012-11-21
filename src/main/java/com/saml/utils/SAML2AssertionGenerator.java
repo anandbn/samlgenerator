@@ -45,6 +45,7 @@ public class SAML2AssertionGenerator {
         idpConfig.setKeystorePassword("123456".toCharArray());
         idpConfig.setKeystoreAliasPassword("123456".toCharArray());
         idpConfig.setIssuer("http://www.chatterio.com");
+        idpConfig.setAudience("https://login.salesforce.com");
         idpConfig.setUserId(username);
         return idpConfig;
     }
