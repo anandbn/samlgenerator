@@ -47,6 +47,8 @@ public class SAML2AssertionGenerator {
         idpConfig.setIssuer("http://www.chatterio.com");
         idpConfig.setAudience("https://saml.salesforce.com");
         idpConfig.setUserId(username);
+        idpConfig.setSsoStartPage("http://axiomsso.herokuapp.com/RequestSamlResponse.action");
+        idpConfig.setLogoutURL("");
         return idpConfig;
     }
     
