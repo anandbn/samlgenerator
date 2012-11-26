@@ -24,9 +24,9 @@ public class SAML2AssertionGenerator {
 		System.out.println("Loaded keystore file from :"+keyStoreFile);
 	}
 
-	public static String getSamlAssertion(String username) throws MarshallingException, TransformerFactoryConfigurationError, TransformerException{
+	public static String getSamlAssertion(String username,String issuer,String recipient) throws MarshallingException, TransformerFactoryConfigurationError, TransformerException{
 		// TODO Auto-generated method stub
-        IdentityProvider idp = new IdentityProvider(getIdpConfig(username));
+        IdentityProvider idp = new IdentityProvider(getIdpConfig(username,issuer,recipient));
         String samlAssertion = XmlObjectSerializer.xmlObjectToString(idp.generateSamlResponse());
         String base64Str = new String(Base64.encodeBase64(samlAssertion.getBytes()));
         System.out.println("==============Assertion BASE64-START ===============");
@@ -34,17 +34,25 @@ public class SAML2AssertionGenerator {
         System.out.println("==============Assertion BASE64-END   ===============");
         return base64Str;
 	}
- 	public static IdpConfiguration getIdpConfig(String username) {
+ 	public static IdpConfiguration getIdpConfig(String username,String issuer,String recipient) {
     	IdpConfiguration idpConfig = new IdpConfiguration();
     	idpConfig.setKeystoreFile(keyStoreFile);
         idpConfig.setSamlUserIdLocation(SamlUserIdLocation.SUBJECT);
         idpConfig.setKeystoreAlias("axiom");
-        idpConfig.setRecipient("https://login.salesforce.com/services/oauth2/token");
+        if(recipient!=null && recipient!=""){
+        	idpConfig.setRecipient(recipient);
+        }else{
+        	idpConfig.setRecipient("https://login.salesforce.com/services/oauth2/token");
+        }
         idpConfig.setSamlVersion(SamlVersion._2_0);
         idpConfig.setUserType(UserType.STANDARD);
         idpConfig.setKeystorePassword("123456".toCharArray());
         idpConfig.setKeystoreAliasPassword("123456".toCharArray());
-        idpConfig.setIssuer("http://www.chatterio.com");
+        if(issuer!=null && issuer!=""){
+        	idpConfig.setIssuer(issuer);
+        }else{
+        	idpConfig.setIssuer("http://www.chatterio.com");
+        }
         idpConfig.setAudience("https://saml.salesforce.com");
         idpConfig.setUserId(username);
         idpConfig.setSsoStartPage("http://axiomsso.herokuapp.com/RequestSamlResponse.action");

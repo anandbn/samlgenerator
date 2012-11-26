@@ -22,10 +22,12 @@ import com.saml.utils.SAML2AssertionGenerator;
 public class JSONController {
 
 	@RequestMapping(value="/saml" ,method = RequestMethod.GET)
-	public @ResponseBody Map<String,String> getAssertion(@RequestParam("username") String username) {
+	public @ResponseBody Map<String,String> getAssertion(@RequestParam("username") String username,
+														 @RequestParam("issuer") String issuer,
+														 @RequestParam("recipient") String recipient) {
 		Map<String,String> retMap = new HashMap<String,String>();
 		try {
-			String samlResponse = SAML2AssertionGenerator.getSamlAssertion(username);
+			String samlResponse = SAML2AssertionGenerator.getSamlAssertion(username,issuer,recipient);
 			retMap.put("assertion",samlResponse);
 			retMap.put("status","success");
 			retMap.put("statusMsg","Generated SAML Assertion successfully !!!");
