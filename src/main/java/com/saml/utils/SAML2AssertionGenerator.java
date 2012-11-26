@@ -39,23 +39,15 @@ public class SAML2AssertionGenerator {
     	idpConfig.setKeystoreFile(keyStoreFile);
         idpConfig.setSamlUserIdLocation(SamlUserIdLocation.SUBJECT);
         idpConfig.setKeystoreAlias("axiom");
-        if(recipient!=null && recipient!=""){
-        	idpConfig.setRecipient(recipient);
-        }else{
-        	idpConfig.setRecipient("https://login.salesforce.com/services/oauth2/token");
-        }
         idpConfig.setSamlVersion(SamlVersion._2_0);
         idpConfig.setUserType(UserType.STANDARD);
         idpConfig.setKeystorePassword("123456".toCharArray());
         idpConfig.setKeystoreAliasPassword("123456".toCharArray());
-        if(issuer!=null && issuer!=""){
-        	idpConfig.setIssuer(issuer);
-        }else{
-        	idpConfig.setIssuer("http://www.chatterio.com");
-        }
         idpConfig.setAudience("https://saml.salesforce.com");
         idpConfig.setUserId(username);
         idpConfig.setSsoStartPage("http://axiomsso.herokuapp.com/RequestSamlResponse.action");
+        idpConfig.setIssuer(issuer);
+        idpConfig.setRecipient(recipient);
         idpConfig.setLogoutURL("");
         return idpConfig;
     }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
 
 import com.saml.utils.SAML2AssertionGenerator;
 
@@ -23,14 +24,24 @@ public class JSONController {
 
 	@RequestMapping(value="/saml" ,method = RequestMethod.GET)
 	public @ResponseBody Map<String,String> getAssertion(@RequestParam("username") String username,
-														 @RequestParam("issuer") String issuer,
-														 @RequestParam("recipient") String recipient) {
+														 WebRequest webRequest) {
+		String recipient = webRequest.getParameter("recipient");
+		String issuer = webRequest.getParameter("issuer");
+        if(recipient == null){
+        	recipient = "https://login.salesforce.com/services/oauth2/token";
+        }
+        if(issuer==null){
+        	issuer = "http://www.chatterio.com";
+        }
+
 		Map<String,String> retMap = new HashMap<String,String>();
 		try {
 			String samlResponse = SAML2AssertionGenerator.getSamlAssertion(username,issuer,recipient);
 			retMap.put("assertion",samlResponse);
 			retMap.put("status","success");
-			retMap.put("statusMsg","Generated SAML Assertion successfully !!!");
+			retMap.put("issuer",issuer);
+			retMap.put("recipient", recipient);
+			retMap.put("statusMsg","Generated SAML Assertion successfully !!");
 		} catch (MarshallingException e) {
 			retMap.put("status","error");
 			retMap.put("statuMsg",e.getMessage());
