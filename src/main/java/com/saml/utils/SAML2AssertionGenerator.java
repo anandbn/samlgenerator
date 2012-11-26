@@ -24,9 +24,9 @@ public class SAML2AssertionGenerator {
 		System.out.println("Loaded keystore file from :"+keyStoreFile);
 	}
 
-	public static String getSamlAssertion(String username,String issuer,String recipient) throws MarshallingException, TransformerFactoryConfigurationError, TransformerException{
+	public static String getSamlAssertion(String username,String issuer,String recipient,String orgId) throws MarshallingException, TransformerFactoryConfigurationError, TransformerException{
 		// TODO Auto-generated method stub
-        IdentityProvider idp = new IdentityProvider(getIdpConfig(username,issuer,recipient));
+        IdentityProvider idp = new IdentityProvider(getIdpConfig(username,issuer,recipient,orgId));
         String samlAssertion = XmlObjectSerializer.xmlObjectToString(idp.generateSamlResponse());
         String base64Str = new String(Base64.encodeBase64(samlAssertion.getBytes()));
         System.out.println("==============Assertion BASE64-START ===============");
@@ -34,7 +34,7 @@ public class SAML2AssertionGenerator {
         System.out.println("==============Assertion BASE64-END   ===============");
         return base64Str;
 	}
- 	public static IdpConfiguration getIdpConfig(String username,String issuer,String recipient) {
+ 	public static IdpConfiguration getIdpConfig(String username,String issuer,String recipient,String orgId) {
     	IdpConfiguration idpConfig = new IdpConfiguration();
     	idpConfig.setKeystoreFile(keyStoreFile);
         idpConfig.setSamlUserIdLocation(SamlUserIdLocation.SUBJECT);
@@ -49,6 +49,8 @@ public class SAML2AssertionGenerator {
         idpConfig.setIssuer(issuer);
         idpConfig.setRecipient(recipient);
         idpConfig.setLogoutURL("");
+        if(orgId!=null && !orgId.equals(""))
+        	idpConfig.setOrgId(orgId);
         return idpConfig;
     }
     
