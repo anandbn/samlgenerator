@@ -49,12 +49,15 @@ public class SAML2AssertionGenerator {
         idpConfig.setIssuer(issuer);
         idpConfig.setRecipient(recipient);
         idpConfig.setLogoutURL("");
-        if(orgId!=null && !orgId.equals(""))
-        	idpConfig.setOrgId(orgId);
-        if(portalId!=null && !portalId.equals(""))
-        	idpConfig.setPortalId(portalId);
-        if(siteUrl!=null && !siteUrl.equals(""))
-        	idpConfig.setSiteURL(siteUrl);
+    	if(orgId!=null && !orgId.equals("")){
+    		idpConfig.setOrgId(orgId);
+    		idpConfig.setPortalId(portalId);
+    		idpConfig.setUserType(UserType.PORTAL);
+       	}
+    	if(siteUrl!=null && !siteUrl.equals("")){
+    		idpConfig.setUserType(UserType.SITE);
+    		idpConfig.setSiteURL(siteUrl);
+    	}
         
         return idpConfig;
     }
