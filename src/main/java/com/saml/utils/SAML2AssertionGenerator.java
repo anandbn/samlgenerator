@@ -24,9 +24,9 @@ public class SAML2AssertionGenerator {
 		System.out.println("Loaded keystore file from :"+keyStoreFile);
 	}
 
-	public static String getSamlAssertion(String username,String issuer,String recipient,String orgId) throws MarshallingException, TransformerFactoryConfigurationError, TransformerException{
+	public static String getSamlAssertion(String username,String issuer,String recipient,String orgId,String portalId,String siteUrl) throws MarshallingException, TransformerFactoryConfigurationError, TransformerException{
 		// TODO Auto-generated method stub
-        IdentityProvider idp = new IdentityProvider(getIdpConfig(username,issuer,recipient,orgId));
+        IdentityProvider idp = new IdentityProvider(getIdpConfig(username,issuer,recipient,orgId,portalId,siteUrl));
         String samlAssertion = XmlObjectSerializer.xmlObjectToString(idp.generateSamlResponse());
         String base64Str = new String(Base64.encodeBase64(samlAssertion.getBytes()));
         System.out.println("==============Assertion BASE64-START ===============");
@@ -34,7 +34,7 @@ public class SAML2AssertionGenerator {
         System.out.println("==============Assertion BASE64-END   ===============");
         return base64Str;
 	}
- 	public static IdpConfiguration getIdpConfig(String username,String issuer,String recipient,String orgId) {
+ 	public static IdpConfiguration getIdpConfig(String username,String issuer,String recipient,String orgId,String portalId,String siteUrl) {
     	IdpConfiguration idpConfig = new IdpConfiguration();
     	idpConfig.setKeystoreFile(keyStoreFile);
         idpConfig.setSamlUserIdLocation(SamlUserIdLocation.SUBJECT);
@@ -51,6 +51,11 @@ public class SAML2AssertionGenerator {
         idpConfig.setLogoutURL("");
         if(orgId!=null && !orgId.equals(""))
         	idpConfig.setOrgId(orgId);
+        if(portalId!=null && !portalId.equals(""))
+        	idpConfig.setPortalId(portalId);
+        if(siteUrl!=null && !siteUrl.equals(""))
+        	idpConfig.setSiteURL(siteUrl);
+        
         return idpConfig;
     }
     

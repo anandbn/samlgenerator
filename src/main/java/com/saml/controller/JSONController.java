@@ -28,6 +28,8 @@ public class JSONController {
 		String recipient = webRequest.getParameter("recipient");
 		String issuer = webRequest.getParameter("issuer");
 		String orgId = webRequest.getParameter("orgId");
+		String portalId = webRequest.getParameter("portalId");
+		String siteUrl = webRequest.getParameter("siteUrl");
         if(recipient == null){
         	recipient = "https://login.salesforce.com/services/oauth2/token";
         }
@@ -37,7 +39,7 @@ public class JSONController {
 
 		Map<String,String> retMap = new HashMap<String,String>();
 		try {
-			String samlResponse = SAML2AssertionGenerator.getSamlAssertion(username,issuer,recipient,orgId);
+			String samlResponse = SAML2AssertionGenerator.getSamlAssertion(username,issuer,recipient,orgId,portalId,siteUrl);
 			retMap.put("assertion",samlResponse);
 			retMap.put("status","success");
 			retMap.put("issuer",issuer);
