@@ -69,6 +69,7 @@ public class JSONController {
 	
 	@RequestMapping(value="/saml" ,method = RequestMethod.OPTIONS)
 	public ResponseEntity<String> handleOptions() {
+		
         System.out.println("==============GOT OPTIONS REQUEST ===============");
 	    HttpHeaders responseHeaders = new HttpHeaders();
 	    responseHeaders.setContentType(MediaType.TEXT_PLAIN);
@@ -76,6 +77,6 @@ public class JSONController {
 	    responseHeaders.add("access-control-max-age", "86400");
 	    responseHeaders.add("access-control-allow-credentials", "true");
 	    responseHeaders.add("access-control-allow-origin", "*");
-	    return new ResponseEntity<String>("", responseHeaders, HttpStatus.OK);
+	    return new ResponseEntity<String>("Ok", responseHeaders, HttpStatus.OK);
 	}
 }
