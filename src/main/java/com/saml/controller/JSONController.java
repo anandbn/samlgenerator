@@ -7,6 +7,10 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 
 import org.opensaml.xml.io.MarshallingException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,4 +66,16 @@ public class JSONController {
 		return retMap;
 	}
 	
+	
+	@RequestMapping(value="/saml" ,method = RequestMethod.OPTIONS)
+	public ResponseEntity<String> handleOptions() {
+        System.out.println("==============GOT OPTIONS REQUEST ===============");
+	    HttpHeaders responseHeaders = new HttpHeaders();
+	    responseHeaders.setContentType(MediaType.TEXT_PLAIN);
+	    responseHeaders.add("access-control-allow-methods", "HEAD, POST, GET, PUT, PATCH, DELETE");
+	    responseHeaders.add("access-control-max-age", "86400");
+	    responseHeaders.add("access-control-allow-credentials", "true");
+	    responseHeaders.add("access-control-allow-origin", "*");
+	    return new ResponseEntity<String>("", responseHeaders, HttpStatus.OK);
+	}
 }
